@@ -28,7 +28,7 @@ namespace Doan5.Controllers
         }
 
         // GET: api/Vieclams/5
-        [HttpGet]
+        [HttpGet("{id}")]
         public async Task<ActionResult<Vieclam>> GetVieclam(int id)
         {
             var vieclam = await _context.Vieclam.FindAsync(id);
