@@ -6,62 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Doan5.Models;
-using Doan5.Helper;
 
 namespace Doan5.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoaicongviecsController : ControllerBase
+    public class KhuvucsController : ControllerBase
     {
         private readonly Doan5Context _context;
 
-        public LoaicongviecsController(Doan5Context context)
+        public KhuvucsController(Doan5Context context)
         {
             _context = context;
         }
 
-        [HttpGet("pagination")]
-        public ActionResult<IEnumerable<Loaicongviec>> GetPage(int page, int pageSize)
-        {
-            var data = Pagination.GetPaged(_context.Loaicongviec, page, pageSize);
-
-            return Ok(data);
-        }
-
-        // GET: api/Loaicongviecs
+        // GET: api/Khuvucs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Loaicongviec>>> GetLoaicongviec()
+        public async Task<ActionResult<IEnumerable<Khuvuc>>> GetKhuvuc()
         {
-            return await _context.Loaicongviec.ToListAsync();
+            return await _context.Khuvuc.ToListAsync();
         }
 
-        // GET: api/Loaicongviecs/5
+        // GET: api/Khuvucs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Loaicongviec>> GetLoaicongviec(int id)
+        public async Task<ActionResult<Khuvuc>> GetKhuvuc(int id)
         {
-            var loaicongviec = await _context.Loaicongviec.FindAsync(id);
+            var khuvuc = await _context.Khuvuc.FindAsync(id);
 
-            if (loaicongviec == null)
+            if (khuvuc == null)
             {
                 return NotFound();
             }
 
-            return loaicongviec;
+            return khuvuc;
         }
 
-        // PUT: api/Loaicongviecs/5
+        // PUT: api/Khuvucs/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLoaicongviec(int id, Loaicongviec loaicongviec)
+        public async Task<IActionResult> PutKhuvuc(int id, Khuvuc khuvuc)
         {
-            if (id != loaicongviec.MaloaiCv)
+            if (id != khuvuc.MaKv)
             {
                 return BadRequest();
             }
 
-            _context.Entry(loaicongviec).State = EntityState.Modified;
+            _context.Entry(khuvuc).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +60,7 @@ namespace Doan5.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LoaicongviecExists(id))
+                if (!KhuvucExists(id))
                 {
                     return NotFound();
                 }
@@ -82,20 +73,20 @@ namespace Doan5.Controllers
             return NoContent();
         }
 
-        // POST: api/Loaicongviecs
+        // POST: api/Khuvucs
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Loaicongviec>> PostLoaicongviec(Loaicongviec loaicongviec)
+        public async Task<ActionResult<Khuvuc>> PostKhuvuc(Khuvuc khuvuc)
         {
-            _context.Loaicongviec.Add(loaicongviec);
+            _context.Khuvuc.Add(khuvuc);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (LoaicongviecExists(loaicongviec.MaloaiCv))
+                if (KhuvucExists(khuvuc.MaKv))
                 {
                     return Conflict();
                 }
@@ -105,28 +96,28 @@ namespace Doan5.Controllers
                 }
             }
 
-            return CreatedAtAction("GetLoaicongviec", new { id = loaicongviec.MaloaiCv }, loaicongviec);
+            return CreatedAtAction("GetKhuvuc", new { id = khuvuc.MaKv }, khuvuc);
         }
 
-        // DELETE: api/Loaicongviecs/5
+        // DELETE: api/Khuvucs/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Loaicongviec>> DeleteLoaicongviec(int id)
+        public async Task<ActionResult<Khuvuc>> DeleteKhuvuc(int id)
         {
-            var loaicongviec = await _context.Loaicongviec.FindAsync(id);
-            if (loaicongviec == null)
+            var khuvuc = await _context.Khuvuc.FindAsync(id);
+            if (khuvuc == null)
             {
                 return NotFound();
             }
 
-            _context.Loaicongviec.Remove(loaicongviec);
+            _context.Khuvuc.Remove(khuvuc);
             await _context.SaveChangesAsync();
 
-            return loaicongviec;
+            return khuvuc;
         }
 
-        private bool LoaicongviecExists(int id)
+        private bool KhuvucExists(int id)
         {
-            return _context.Loaicongviec.Any(e => e.MaloaiCv == id);
+            return _context.Khuvuc.Any(e => e.MaKv == id);
         }
     }
 }

@@ -6,62 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Doan5.Models;
-using Doan5.Helper;
 
 namespace Doan5.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoaicongviecsController : ControllerBase
+    public class UserNdsController : ControllerBase
     {
         private readonly Doan5Context _context;
 
-        public LoaicongviecsController(Doan5Context context)
+        public UserNdsController(Doan5Context context)
         {
             _context = context;
         }
 
-        [HttpGet("pagination")]
-        public ActionResult<IEnumerable<Loaicongviec>> GetPage(int page, int pageSize)
-        {
-            var data = Pagination.GetPaged(_context.Loaicongviec, page, pageSize);
-
-            return Ok(data);
-        }
-
-        // GET: api/Loaicongviecs
+        // GET: api/UserNds
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Loaicongviec>>> GetLoaicongviec()
+        public async Task<ActionResult<IEnumerable<UserNd>>> GetUserNd()
         {
-            return await _context.Loaicongviec.ToListAsync();
+            return await _context.UserNd.ToListAsync();
         }
 
-        // GET: api/Loaicongviecs/5
+        // GET: api/UserNds/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Loaicongviec>> GetLoaicongviec(int id)
+        public async Task<ActionResult<UserNd>> GetUserNd(int id)
         {
-            var loaicongviec = await _context.Loaicongviec.FindAsync(id);
+            var userNd = await _context.UserNd.FindAsync(id);
 
-            if (loaicongviec == null)
+            if (userNd == null)
             {
                 return NotFound();
             }
 
-            return loaicongviec;
+            return userNd;
         }
 
-        // PUT: api/Loaicongviecs/5
+        // PUT: api/UserNds/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLoaicongviec(int id, Loaicongviec loaicongviec)
+        public async Task<IActionResult> PutUserNd(int id, UserNd userNd)
         {
-            if (id != loaicongviec.MaloaiCv)
+            if (id != userNd.Mauser)
             {
                 return BadRequest();
             }
 
-            _context.Entry(loaicongviec).State = EntityState.Modified;
+            _context.Entry(userNd).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +60,7 @@ namespace Doan5.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LoaicongviecExists(id))
+                if (!UserNdExists(id))
                 {
                     return NotFound();
                 }
@@ -82,20 +73,20 @@ namespace Doan5.Controllers
             return NoContent();
         }
 
-        // POST: api/Loaicongviecs
+        // POST: api/UserNds
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Loaicongviec>> PostLoaicongviec(Loaicongviec loaicongviec)
+        public async Task<ActionResult<UserNd>> PostUserNd(UserNd userNd)
         {
-            _context.Loaicongviec.Add(loaicongviec);
+            _context.UserNd.Add(userNd);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (LoaicongviecExists(loaicongviec.MaloaiCv))
+                if (UserNdExists(userNd.Mauser))
                 {
                     return Conflict();
                 }
@@ -105,28 +96,28 @@ namespace Doan5.Controllers
                 }
             }
 
-            return CreatedAtAction("GetLoaicongviec", new { id = loaicongviec.MaloaiCv }, loaicongviec);
+            return CreatedAtAction("GetUserNd", new { id = userNd.Mauser }, userNd);
         }
 
-        // DELETE: api/Loaicongviecs/5
+        // DELETE: api/UserNds/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Loaicongviec>> DeleteLoaicongviec(int id)
+        public async Task<ActionResult<UserNd>> DeleteUserNd(int id)
         {
-            var loaicongviec = await _context.Loaicongviec.FindAsync(id);
-            if (loaicongviec == null)
+            var userNd = await _context.UserNd.FindAsync(id);
+            if (userNd == null)
             {
                 return NotFound();
             }
 
-            _context.Loaicongviec.Remove(loaicongviec);
+            _context.UserNd.Remove(userNd);
             await _context.SaveChangesAsync();
 
-            return loaicongviec;
+            return userNd;
         }
 
-        private bool LoaicongviecExists(int id)
+        private bool UserNdExists(int id)
         {
-            return _context.Loaicongviec.Any(e => e.MaloaiCv == id);
+            return _context.UserNd.Any(e => e.Mauser == id);
         }
     }
 }

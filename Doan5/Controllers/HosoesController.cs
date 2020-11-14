@@ -6,62 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Doan5.Models;
-using Doan5.Helper;
 
 namespace Doan5.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoaicongviecsController : ControllerBase
+    public class HosoesController : ControllerBase
     {
         private readonly Doan5Context _context;
 
-        public LoaicongviecsController(Doan5Context context)
+        public HosoesController(Doan5Context context)
         {
             _context = context;
         }
 
-        [HttpGet("pagination")]
-        public ActionResult<IEnumerable<Loaicongviec>> GetPage(int page, int pageSize)
-        {
-            var data = Pagination.GetPaged(_context.Loaicongviec, page, pageSize);
-
-            return Ok(data);
-        }
-
-        // GET: api/Loaicongviecs
+        // GET: api/Hosoes
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Loaicongviec>>> GetLoaicongviec()
+        public async Task<ActionResult<IEnumerable<Hoso>>> GetHoso()
         {
-            return await _context.Loaicongviec.ToListAsync();
+            return await _context.Hoso.ToListAsync();
         }
 
-        // GET: api/Loaicongviecs/5
+        // GET: api/Hosoes/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Loaicongviec>> GetLoaicongviec(int id)
+        public async Task<ActionResult<Hoso>> GetHoso(int id)
         {
-            var loaicongviec = await _context.Loaicongviec.FindAsync(id);
+            var hoso = await _context.Hoso.FindAsync(id);
 
-            if (loaicongviec == null)
+            if (hoso == null)
             {
                 return NotFound();
             }
 
-            return loaicongviec;
+            return hoso;
         }
 
-        // PUT: api/Loaicongviecs/5
+        // PUT: api/Hosoes/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLoaicongviec(int id, Loaicongviec loaicongviec)
+        public async Task<IActionResult> PutHoso(int id, Hoso hoso)
         {
-            if (id != loaicongviec.MaloaiCv)
+            if (id != hoso.MaHs)
             {
                 return BadRequest();
             }
 
-            _context.Entry(loaicongviec).State = EntityState.Modified;
+            _context.Entry(hoso).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +60,7 @@ namespace Doan5.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LoaicongviecExists(id))
+                if (!HosoExists(id))
                 {
                     return NotFound();
                 }
@@ -82,20 +73,20 @@ namespace Doan5.Controllers
             return NoContent();
         }
 
-        // POST: api/Loaicongviecs
+        // POST: api/Hosoes
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Loaicongviec>> PostLoaicongviec(Loaicongviec loaicongviec)
+        public async Task<ActionResult<Hoso>> PostHoso(Hoso hoso)
         {
-            _context.Loaicongviec.Add(loaicongviec);
+            _context.Hoso.Add(hoso);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (LoaicongviecExists(loaicongviec.MaloaiCv))
+                if (HosoExists(hoso.MaHs))
                 {
                     return Conflict();
                 }
@@ -105,28 +96,28 @@ namespace Doan5.Controllers
                 }
             }
 
-            return CreatedAtAction("GetLoaicongviec", new { id = loaicongviec.MaloaiCv }, loaicongviec);
+            return CreatedAtAction("GetHoso", new { id = hoso.MaHs }, hoso);
         }
 
-        // DELETE: api/Loaicongviecs/5
+        // DELETE: api/Hosoes/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Loaicongviec>> DeleteLoaicongviec(int id)
+        public async Task<ActionResult<Hoso>> DeleteHoso(int id)
         {
-            var loaicongviec = await _context.Loaicongviec.FindAsync(id);
-            if (loaicongviec == null)
+            var hoso = await _context.Hoso.FindAsync(id);
+            if (hoso == null)
             {
                 return NotFound();
             }
 
-            _context.Loaicongviec.Remove(loaicongviec);
+            _context.Hoso.Remove(hoso);
             await _context.SaveChangesAsync();
 
-            return loaicongviec;
+            return hoso;
         }
 
-        private bool LoaicongviecExists(int id)
+        private bool HosoExists(int id)
         {
-            return _context.Loaicongviec.Any(e => e.MaloaiCv == id);
+            return _context.Hoso.Any(e => e.MaHs == id);
         }
     }
 }

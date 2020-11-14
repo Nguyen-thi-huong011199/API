@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Doan5.Models;
+using Doan5.Helper;
+using Doan5.Services;
 
 namespace Doan5.Controllers
 {
@@ -14,10 +16,20 @@ namespace Doan5.Controllers
     public class VieclamsController : ControllerBase
     {
         private readonly Doan5Context _context;
+        private readonly IFileService _fileService;
 
-        public VieclamsController(Doan5Context context)
+        public VieclamsController(Doan5Context context, IFileService fileService)
         {
             _context = context;
+            _fileService = fileService;
+        }
+
+        [HttpGet("pagination")]
+        public ActionResult<IEnumerable<Vieclam>> GetPage(int page, int pageSize)
+        {
+            var data = Pagination.GetPaged(_context.Vieclam, page, pageSize);
+
+            return Ok(data);
         }
 
         // GET: api/Vieclams
@@ -61,18 +73,39 @@ namespace Doan5.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutVieclam(int id, Vieclam vieclam)
+        public async Task<IActionResult> PutProduct(int id, [FromBody] Dictionary<string, object> formData)
         {
-            if (id != vieclam.MaCv)
+            var vieclam = _context.Vieclam.Find(id);
+
+            if (vieclam == null)
             {
                 return BadRequest();
             }
 
-            _context.Entry(vieclam).State = EntityState.Modified;
-
             try
             {
+                vieclam.MaloaiCv = int.Parse(formData["MaloaiCv"].ToString());
+                vieclam.MaNtd = int.Parse(formData["MaNtd"].ToString());
+                vieclam.MaKv = int.Parse(formData["MaKv"].ToString());
+                vieclam.TenCv = formData["TenCv"].ToString();
+                vieclam.Tencongty = formData["Tencongty"].ToString();
+                vieclam.MotaCv = formData["MotaCv"].ToString();
+                vieclam.Mucluong = formData["Mucluong"].ToString();
+                vieclam.Diachi = formData["Diachi"].ToString();
+                vieclam.Ngaydang = DateTime.Now;
+
+                if (formData.ContainsKey("Anh"))
+                {
+                    var Image = formData["Anh"].ToString();
+
+                    if ((vieclam.Anh = _fileService.WriteFileBase64(Image)) == null)
+                    {
+                        vieclam.Anh = "error.jpg";
+                    }
+                }
+
                 await _context.SaveChangesAsync();
+                return Ok();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -85,36 +118,71 @@ namespace Doan5.Controllers
                     throw;
                 }
             }
-
-            return NoContent();
         }
 
         // POST: api/Vieclams
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Vieclam>> PostVieclam(Vieclam vieclam)
+        public async Task<ActionResult<Vieclam>> PostVieclam ([FromBody] Dictionary<string, object> formData)
         {
-            _context.Vieclam.Add(vieclam);
             try
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (VieclamExists(vieclam.MaCv))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+                var vieclam = new Vieclam();
 
-            return CreatedAtAction("GetVieclam", new { id = vieclam.MaCv }, vieclam);
+                vieclam.MaloaiCv = int.Parse(formData["MaloaiCv"].ToString());
+                vieclam.MaNtd = int.Parse(formData["MaNtd"].ToString());
+                vieclam.MaKv = int.Parse(formData["MaKv"].ToString());
+                vieclam.TenCv = formData["TenCv"].ToString();
+                vieclam.Tencongty = formData["Tencongty"].ToString();
+                vieclam.MotaCv = formData["MotaCv"].ToString();
+                vieclam.Mucluong = formData["Mucluong"].ToString();
+                vieclam.Diachi = formData["Diachi"].ToString();
+                vieclam.Luotxem = "1";
+                vieclam.Ngaydang = DateTime.Now;
+
+                vieclam.Anh = "error.jpg";
+                if (formData.ContainsKey("Anh"))
+                {
+                    var Image = formData["Anh"].ToString();
+
+                    if ((vieclam.Anh = _fileService.WriteFileBase64(Image)) == null)
+                    {
+                        vieclam.Anh = "error.jpg";
+                    }
+                }
+                _context.Vieclam.Add(vieclam);
+                await _context.SaveChangesAsync();
+
+                return Ok(vieclam);
+            }
+            catch (Exception e)
+            {
+                return Ok(new { message = e.Message });
+            }
         }
 
+        [HttpGet("get-loai/{id}")]
+        public IEnumerable<Vieclam> GetLoaiViecLam(int id)
+        {
+            var viecLam = _context.Vieclam.Where(vl => vl.MaloaiCv == id);
+
+            return viecLam;
+        }
+        [HttpGet("get-loai-top4/{id}")]
+        public IEnumerable<Vieclam> GetLoaiViecLamTop4(int id)
+        {
+            var viecLam = _context.Vieclam.Where(vl => vl.MaloaiCv == id).Take(4);
+
+            return viecLam;
+        }
+        [HttpGet("get-loai-top6/{id}")]
+        public IEnumerable<Vieclam> GetLoaiViecLamTop6(int id)
+        {
+            var viecLam = _context.Vieclam.Where(vl => vl.MaloaiCv == id).Take(6);
+
+            return viecLam;
+        }
         // DELETE: api/Vieclams/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<Vieclam>> DeleteVieclam(int id)

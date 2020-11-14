@@ -6,62 +6,53 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Doan5.Models;
-using Doan5.Helper;
 
 namespace Doan5.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LoaicongviecsController : ControllerBase
+    public class NhatuyendungsController : ControllerBase
     {
         private readonly Doan5Context _context;
 
-        public LoaicongviecsController(Doan5Context context)
+        public NhatuyendungsController(Doan5Context context)
         {
             _context = context;
         }
 
-        [HttpGet("pagination")]
-        public ActionResult<IEnumerable<Loaicongviec>> GetPage(int page, int pageSize)
-        {
-            var data = Pagination.GetPaged(_context.Loaicongviec, page, pageSize);
-
-            return Ok(data);
-        }
-
-        // GET: api/Loaicongviecs
+        // GET: api/Nhatuyendungs
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Loaicongviec>>> GetLoaicongviec()
+        public async Task<ActionResult<IEnumerable<Nhatuyendung>>> GetNhatuyendung()
         {
-            return await _context.Loaicongviec.ToListAsync();
+            return await _context.Nhatuyendung.ToListAsync();
         }
 
-        // GET: api/Loaicongviecs/5
+        // GET: api/Nhatuyendungs/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Loaicongviec>> GetLoaicongviec(int id)
+        public async Task<ActionResult<Nhatuyendung>> GetNhatuyendung(int id)
         {
-            var loaicongviec = await _context.Loaicongviec.FindAsync(id);
+            var nhatuyendung = await _context.Nhatuyendung.FindAsync(id);
 
-            if (loaicongviec == null)
+            if (nhatuyendung == null)
             {
                 return NotFound();
             }
 
-            return loaicongviec;
+            return nhatuyendung;
         }
 
-        // PUT: api/Loaicongviecs/5
+        // PUT: api/Nhatuyendungs/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLoaicongviec(int id, Loaicongviec loaicongviec)
+        public async Task<IActionResult> PutNhatuyendung(int id, Nhatuyendung nhatuyendung)
         {
-            if (id != loaicongviec.MaloaiCv)
+            if (id != nhatuyendung.MaNtd)
             {
                 return BadRequest();
             }
 
-            _context.Entry(loaicongviec).State = EntityState.Modified;
+            _context.Entry(nhatuyendung).State = EntityState.Modified;
 
             try
             {
@@ -69,7 +60,7 @@ namespace Doan5.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LoaicongviecExists(id))
+                if (!NhatuyendungExists(id))
                 {
                     return NotFound();
                 }
@@ -82,20 +73,20 @@ namespace Doan5.Controllers
             return NoContent();
         }
 
-        // POST: api/Loaicongviecs
+        // POST: api/Nhatuyendungs
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Loaicongviec>> PostLoaicongviec(Loaicongviec loaicongviec)
+        public async Task<ActionResult<Nhatuyendung>> PostNhatuyendung(Nhatuyendung nhatuyendung)
         {
-            _context.Loaicongviec.Add(loaicongviec);
+            _context.Nhatuyendung.Add(nhatuyendung);
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
-                if (LoaicongviecExists(loaicongviec.MaloaiCv))
+                if (NhatuyendungExists(nhatuyendung.MaNtd))
                 {
                     return Conflict();
                 }
@@ -105,28 +96,28 @@ namespace Doan5.Controllers
                 }
             }
 
-            return CreatedAtAction("GetLoaicongviec", new { id = loaicongviec.MaloaiCv }, loaicongviec);
+            return CreatedAtAction("GetNhatuyendung", new { id = nhatuyendung.MaNtd }, nhatuyendung);
         }
 
-        // DELETE: api/Loaicongviecs/5
+        // DELETE: api/Nhatuyendungs/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Loaicongviec>> DeleteLoaicongviec(int id)
+        public async Task<ActionResult<Nhatuyendung>> DeleteNhatuyendung(int id)
         {
-            var loaicongviec = await _context.Loaicongviec.FindAsync(id);
-            if (loaicongviec == null)
+            var nhatuyendung = await _context.Nhatuyendung.FindAsync(id);
+            if (nhatuyendung == null)
             {
                 return NotFound();
             }
 
-            _context.Loaicongviec.Remove(loaicongviec);
+            _context.Nhatuyendung.Remove(nhatuyendung);
             await _context.SaveChangesAsync();
 
-            return loaicongviec;
+            return nhatuyendung;
         }
 
-        private bool LoaicongviecExists(int id)
+        private bool NhatuyendungExists(int id)
         {
-            return _context.Loaicongviec.Any(e => e.MaloaiCv == id);
+            return _context.Nhatuyendung.Any(e => e.MaNtd == id);
         }
     }
 }

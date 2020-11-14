@@ -41,8 +41,7 @@ namespace Doan5.Models
                     .HasName("PK__Hoso__2725A6EF59D0FE11");
 
                 entity.Property(e => e.MaHs)
-                    .HasColumnName("MaHS")
-                    .ValueGeneratedNever();
+                    .HasColumnName("MaHS");
 
                 entity.Property(e => e.Email)
                     .IsRequired()
@@ -83,8 +82,7 @@ namespace Doan5.Models
                     .HasName("PK__Khuvuc__2725CF6CDC41C406");
 
                 entity.Property(e => e.MaKv)
-                    .HasColumnName("MaKV")
-                    .ValueGeneratedNever();
+                    .HasColumnName("MaKV");
 
                 entity.Property(e => e.TenKv)
                     .IsRequired()
@@ -98,8 +96,7 @@ namespace Doan5.Models
                     .HasName("PK__Loaicong__F82E4CF1E8769AAE");
 
                 entity.Property(e => e.MaloaiCv)
-                    .HasColumnName("MaloaiCV")
-                    .ValueGeneratedNever();
+                    .HasColumnName("MaloaiCV");
 
                 entity.Property(e => e.TenloaiCv)
                     .IsRequired()
@@ -113,8 +110,7 @@ namespace Doan5.Models
                     .HasName("PK__Nguoitim__3A1BD3F7F5E051D9");
 
                 entity.Property(e => e.MaNtv)
-                    .HasColumnName("MaNTV")
-                    .ValueGeneratedNever();
+                    .HasColumnName("MaNTV");
 
                 entity.Property(e => e.TenNtv)
                     .IsRequired()
@@ -133,8 +129,7 @@ namespace Doan5.Models
                     .HasName("PK__Nhatuyen__3A1BD385F4FE83D1");
 
                 entity.Property(e => e.MaNtd)
-                    .HasColumnName("MaNTD")
-                    .ValueGeneratedNever();
+                    .HasColumnName("MaNTD");
 
                 entity.Property(e => e.TenNtd)
                     .IsRequired()
@@ -153,8 +148,7 @@ namespace Doan5.Models
                     .HasName("PK__Taikhoan__27250070A312C4D6");
 
                 entity.Property(e => e.MaTk)
-                    .HasColumnName("MaTK")
-                    .ValueGeneratedNever();
+                    .HasColumnName("MaTK");
 
                 entity.Property(e => e.Diachi)
                     .IsRequired()
@@ -192,7 +186,8 @@ namespace Doan5.Models
 
                 entity.ToTable("UserND");
 
-                entity.Property(e => e.Mauser).ValueGeneratedNever();
+                entity.Property(e => e.Mauser)
+                    .HasColumnName("Mauser");
 
                 entity.Property(e => e.Anhdaidien)
                     .IsRequired()
@@ -217,8 +212,7 @@ namespace Doan5.Models
                     .HasName("PK__Vieclam__27258E76EE975FE2");
 
                 entity.Property(e => e.MaCv)
-                    .HasColumnName("MaCV")
-                    .ValueGeneratedNever();
+                    .HasColumnName("MaCV");
 
                 entity.Property(e => e.Anh)
                     .IsRequired()
