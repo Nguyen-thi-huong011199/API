@@ -34,6 +34,7 @@ namespace Doan5
             services.AddDbContextPool<Doan5Context>(options => options.UseSqlServer(conn));
             services.AddControllers();
             services.AddScoped<IFileService, FileService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

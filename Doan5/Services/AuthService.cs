@@ -12,7 +12,7 @@ namespace Doan5.Services
         Taikhoan Create(Taikhoan user, string password);
     }
 
-    public class AuthService
+    public class AuthService: IAuthService
     {
         private readonly Doan5Context _context;
 
@@ -26,7 +26,7 @@ namespace Doan5.Services
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 return null;
 
-            var user = _context.Taikhoan.SingleOrDefault(x => x.TenTk == username && x.Matkhau == password);
+            var user = _context.Taikhoan.FirstOrDefault(x => x.TenTk == username && x.Matkhau == password);
 
             // check if username exists
             if (user == null)

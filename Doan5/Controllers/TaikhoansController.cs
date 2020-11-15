@@ -59,27 +59,6 @@ namespace Doan5.Controllers
             });
         }
 
-        [HttpGet("register")]
-        public IActionResult Register([FromBody] Dictionary<string, object> formData)
-        {
-            try
-            {
-                // create user default
-                var u = new UserNd();
-
-                var user = new Taikhoan();
-
-                user.
-
-                return Ok(user);
-            }
-            catch (Exception ex)
-            {
-                // return error message if there was an exception
-                return BadRequest(new { message = ex.Message });
-            }
-        }
-
         // GET: api/Taikhoans
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Taikhoan>>> GetTaikhoan()
